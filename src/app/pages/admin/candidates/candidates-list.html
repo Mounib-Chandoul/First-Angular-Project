@@ -1,0 +1,54 @@
+<div class="candidates-container">
+  <div class="candidates-header">
+    <div class="header-content">
+      <h2>Manage Candidates</h2>
+      <p class="subtitle">Register, edit, and manage training candidates</p>
+    </div>
+    <a routerLink="/admin/candidates/new" class="btn-primary">+ New Candidate</a>
+  </div>
+
+  <div class="candidates-content">
+    <div *ngIf="loading" class="loading-state">
+      <div class="spinner-icon">⊙</div>
+      <p>Loading candidates...</p>
+    </div>
+
+    <div *ngIf="error && !loading" class="error-alert" role="alert">
+      <span class="error-icon">⚠</span>
+      {{ error }}
+    </div>
+
+    <div *ngIf="!loading && candidates.length === 0" class="empty-state">
+      <p>No candidates found</p>
+      <a routerLink="/admin/candidates/new" class="btn-secondary">Add First Candidate</a>
+    </div>
+
+    <div *ngIf="!loading && candidates.length > 0" class="candidates-table-wrapper">
+      <table class="candidates-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>ID Card</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let candidate of candidates" class="candidate-row">
+            <td class="name-cell">{{ candidate.firstName }} {{ candidate.lastName }}</td>
+            <td class="email-cell">{{ candidate.email }}</td>
+            <td class="idcard-cell">{{ candidate.idCardNumber }}</td>
+            <td class="status-cell">
+              <span class="badge badge-active">Active</span>
+            </td>
+            <td class="actions-cell">
+              <a [routerLink]="['/admin/candidates', candidate.id, 'edit']" class="btn-action btn-edit" title="Edit candidate">✎ Edit</a>
+              <button (click)="delete(candidate.id)" class="btn-action btn-delete" title="Delete candidate">✕ Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

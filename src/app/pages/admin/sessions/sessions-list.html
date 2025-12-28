@@ -1,0 +1,59 @@
+<div class="sessions-container">
+  <div class="sessions-header">
+    <div class="header-content">
+      <h2>Manage Sessions</h2>
+      <p class="subtitle">View, create, edit, and delete training sessions</p>
+    </div>
+    <button class="btn-primary" (click)="create()">+ New Session</button>
+  </div>
+
+  <div class="sessions-content">
+    <div *ngIf="loading" class="loading-state">
+      <div class="spinner-icon">⊙</div>
+      <p>Loading sessions...</p>
+    </div>
+
+    <div *ngIf="error && !loading" class="error-alert" role="alert">
+      <span class="error-icon">⚠</span>
+      {{ error }}
+    </div>
+
+    <div *ngIf="!loading && sessions.length === 0" class="empty-state">
+      <p>No sessions found</p>
+      <button class="btn-secondary" (click)="create()">Create First Session</button>
+    </div>
+
+    <div *ngIf="!loading && sessions.length > 0" class="sessions-table-wrapper">
+      <table class="sessions-table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Date</th>
+            <th>Trainer</th>
+            <th>Enrollments</th>
+            <th>Capacity</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let s of sessions" class="session-row" [class.full]="s.isFull">
+            <td class="title-cell">{{ s.title }}</td>
+            <td class="date-cell">{{ s.date }}</td>
+            <td class="trainer-cell">{{ s.trainerName }}</td>
+            <td class="enrollment-cell">{{ s.enrollmentStatus }}</td>
+            <td class="capacity-cell">{{ s.capacity || '-' }}</td>
+            <td class="status-cell">
+              <span *ngIf="!s.isFull" class="badge badge-open">Disponible</span>
+              <span *ngIf="s.isFull" class="badge badge-full">Complet</span>
+            </td>
+            <td class="actions-cell">
+              <button class="btn-action btn-edit" (click)="edit(s)" title="Edit session">✎ Edit</button>
+              <button class="btn-action btn-delete" (click)="remove(s)" title="Delete session">✕ Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

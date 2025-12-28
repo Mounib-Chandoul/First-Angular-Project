@@ -1,0 +1,52 @@
+<div class="trainers-container">
+  <div class="trainers-header">
+    <div class="header-content">
+      <h2>Manage Trainers</h2>
+      <p class="subtitle">Add, edit, and manage training instructors</p>
+    </div>
+    <a routerLink="/admin/trainers/new" class="btn-primary">+ New Trainer</a>
+  </div>
+
+  <div class="trainers-content">
+    <div *ngIf="loading" class="loading-state">
+      <div class="spinner-icon">⊙</div>
+      <p>Loading trainers...</p>
+    </div>
+
+    <div *ngIf="error && !loading" class="error-alert" role="alert">
+      <span class="error-icon">⚠</span>
+      {{ error }}
+    </div>
+
+    <div *ngIf="!loading && trainers.length === 0" class="empty-state">
+      <p>No trainers found</p>
+      <a routerLink="/admin/trainers/new" class="btn-secondary">Add First Trainer</a>
+    </div>
+
+    <div *ngIf="!loading && trainers.length > 0" class="trainers-table-wrapper">
+      <table class="trainers-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Specialties</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let trainer of trainers" class="trainer-row">
+            <td class="name-cell">{{ trainer.firstName }} {{ trainer.lastName }}</td>
+            <td class="email-cell">{{ trainer.email }}</td>
+            <td class="phone-cell">{{ trainer.phone }}</td>
+            <td class="specialties-cell">{{ trainer.specialties ? trainer.specialties.join(', ') : '-' }}</td>
+            <td class="actions-cell">
+              <a [routerLink]="['/admin/trainers', trainer.id, 'edit']" class="btn-action btn-edit" title="Edit trainer">✎ Edit</a>
+              <button (click)="delete(trainer.id)" class="btn-action btn-delete" title="Delete trainer">✕ Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

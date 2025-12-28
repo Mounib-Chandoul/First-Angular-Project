@@ -1,0 +1,48 @@
+<div class="categories-container">
+  <div class="categories-header">
+    <div class="header-content">
+      <h2>Manage Categories</h2>
+      <p class="subtitle">Create and manage training program categories</p>
+    </div>
+    <a routerLink="/admin/categories/new" class="btn-primary">+ New Category</a>
+  </div>
+
+  <div class="categories-content">
+    <div *ngIf="loading" class="loading-state">
+      <div class="spinner-icon">⊙</div>
+      <p>Loading categories...</p>
+    </div>
+
+    <div *ngIf="error && !loading" class="error-alert" role="alert">
+      <span class="error-icon">⚠</span>
+      {{ error }}
+    </div>
+
+    <div *ngIf="!loading && categories.length === 0" class="empty-state">
+      <p>No categories found</p>
+      <a routerLink="/admin/categories/new" class="btn-secondary">Create First Category</a>
+    </div>
+
+    <div *ngIf="!loading && categories.length > 0" class="categories-table-wrapper">
+      <table class="categories-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let category of categories" class="category-row">
+            <td class="name-cell">{{ category.name }}</td>
+            <td class="description-cell">{{ category.description || '-' }}</td>
+            <td class="actions-cell">
+              <a [routerLink]="['/admin/categories', category.id, 'edit']" class="btn-action btn-edit" title="Edit category">✎ Edit</a>
+              <button (click)="delete(category.id)" class="btn-action btn-delete" title="Delete category">✕ Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<div class="backdrop" *ngIf="open">
+  <div class="modal">
+    <div class="header">
+      <h3>S’inscrire à la session</h3>
+      <button class="x" (click)="close()">✕</button>
+    </div>
+
+    <div class="body">
+      <div class="session-info" *ngIf="session">
+        <div><strong>Session:</strong> {{ session.description || '—' }}</div>
+        <div class="small">
+          {{ (session.startDate | date:'mediumDate') }} → {{ (session.endDate | date:'mediumDate') }}
+        </div>
+      </div>
+
+      <div *ngIf="error" class="error">{{ error }}</div>
+
+      <div *ngIf="success" class="success">✓ Inscription réussie! Redirection en cours...</div>
+
+      <div *ngIf="!success" class="form">
+        <label class="label">Prénom <span class="required">*</span></label>
+        <input class="input" type="text" [(ngModel)]="firstName" [disabled]="loading" [class.error]="validationErrors['firstName']" />
+        <span *ngIf="validationErrors['firstName']" class="error-message">{{ validationErrors['firstName'] }}</span>
+
+        <label class="label">Nom <span class="required">*</span></label>
+        <input class="input" type="text" [(ngModel)]="lastName" [disabled]="loading" [class.error]="validationErrors['lastName']" />
+        <span *ngIf="validationErrors['lastName']" class="error-message">{{ validationErrors['lastName'] }}</span>
+
+        <label class="label">Email <span class="required">*</span></label>
+        <input class="input" type="email" [(ngModel)]="email" [disabled]="loading" [class.error]="validationErrors['email']" />
+        <span *ngIf="validationErrors['email']" class="error-message">{{ validationErrors['email'] }}</span>
+      </div>
+    </div>
+
+    <div class="footer">
+      <button class="btn ghost" (click)="close()" [disabled]="loading || success">Annuler</button>
+      <button class="btn primary" (click)="submit()" [disabled]="loading || success">
+        {{ loading ? 'Inscription...' : 'S'inscrire' }}
+      </button>
+    </div>
+  </div>
+</div>

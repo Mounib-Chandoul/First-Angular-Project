@@ -1,0 +1,132 @@
+<div class="page">
+  <div *ngIf="loading" class="state info">
+    <span class="dot"></span> Chargement des détails...
+  </div>
+
+  <div *ngIf="!loading && error" class="state error">
+    {{ error }}
+  </div>
+
+  <ng-container *ngIf="!loading && !error && data">
+    <!-- Header -->
+    <div class="header">
+      <div class="title-wrap">
+        <h1 class="title" id="training-title">{{ data.training?.title }}</h1>
+        <p class="desc" id="training-description">{{ data.training?.description }}</p>
+
+        <div class="chips" role="list">
+          <span class="chip level" role="listitem">{{ data.training?.level }}</span>
+          <span class="chip" role="listitem">{{ data.training?.duration_hours }}h</span>
+          <span class="chip ghost" role="listitem" *ngIf="data.training?.is_active">Active</span>
+        </div>
+
+        <div class="meta-row">
+          <div class="meta">
+            <span class="label" id="categories-label">Catégories</span>
+            <div class="pill-row" role="list" aria-labelledby="categories-label">
+              <span class="pill" role="listitem" *ngFor="let c of data.categories">{{ c.name }}</span>
+              <span class="pill muted" role="listitem" *ngIf="!data.categories || data.categories.length === 0">—</span>
+            </div>
+          </div>
+
+          <div class="meta">
+            <span class="label" id="tags-label">Tags</span>
+            <div class="pill-row" role="list" aria-labelledby="tags-label">
+              <span class="pill tag" role="listitem" *ngFor="let t of data.tags">#{{ t.name }}</span>
+              <span class="pill muted" role="listitem" *ngIf="!data.tags || data.tags.length === 0">—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="actions">
+        <button class="btn primary" type="button" aria-label="Télécharger le programme en PDF" (click)="downloadPDF()">
+          Voir programme (PDF)
+        </button>
+        <button class="btn" type="button" routerLink="/search" aria-label="Retourner à la recherche des formations">
+          ← Retour
+        </button>
+      </div>
+    </div>
+
+    <section class="section" aria-labelledby="sessions-title">
+      <div class="section-head">
+        <h2 id="sessions-title">Sessions à venir</h2>
+        <p class="hint" id="sessions-hint">Choisissez une session et inscrivez-vous (max 15 candidats).</p>
+      </div>
+
+      <div *ngIf="!data.upcoming_sessions || data.upcoming_sessions.length === 0" class="empty" role="status" aria-live="polite">
+        <div class="empty-icon">📅</div>
+        <div>
+          <div class="empty-title">Aucune session à venir</div>
+          <div class="empty-sub">Revenez plus tard ou consultez d’autres formations.</div>
+        </div>
+      </div>
+
+      <div class="sessions" *ngIf="data.upcoming_sessions?.length > 0" role="list" aria-describedby="sessions-hint">
+        <article class="session-card" *ngFor="let s of data.upcoming_sessions; let i = index" role="listitem" [attr.aria-label]="'Session ' + (i + 1) + ' du ' + s.start_date + ' au ' + s.end_date">
+          <div class="session-top">
+            <div class="dates">
+              <div class="date">
+                <span class="label">Début</span>
+                <span class="value">{{ s.start_date }}</span>
+              </div>
+              <div class="date">
+                <span class="label">Fin</span>
+                <span class="value">{{ s.end_date }}</span>
+              </div>
+            </div>
+
+            <div class="capacity" aria-label="Capacité de la session">
+              <div class="cap">
+                <span class="cap-num" aria-label="Nombre d'inscrits">{{ s.enrolled_count }}</span>
+                <span class="cap-txt">/ 15 inscrits</span>
+              </div>
+
+              <span class="badge full" *ngIf="s.is_full" role="status">Complet</span>
+              <span class="badge ok" *ngIf="!s.is_full" role="status">Places dispo</span>
+            </div>
+          </div>
+
+          <div class="session-body">
+            <div class="trainers" *ngIf="s.trainers?.length > 0">
+              <div class="label" id="trainers-label-{{i}}">Formateur(s)</div>
+              <ul class="trainer-list" role="list" [attr.aria-labelledby]="'trainers-label-' + i">
+                <li *ngFor="let t of s.trainers" role="listitem">
+                  <span class="avatar" [attr.aria-label]="'Avatar de ' + t.full_name">{{ (t.full_name || '').charAt(0) }}</span>
+                  <span class="name">{{ t.full_name }}</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="trainers" *ngIf="!s.trainers || s.trainers.length === 0">
+              <div class="label">Formateur(s)</div>
+              <div class="muted" role="status">Non assigné</div>
+            </div>
+
+            <div class="cta">
+              <button class="btn enroll"
+                      type="button"
+                      (click)="startEnroll(s)"
+                      [disabled]="s.is_full"
+                      [attr.aria-label]="(s.is_full ? 'Session complète' : 'S\'inscrire à cette session')">
+                {{ s.is_full ? 'Complet' : "S'inscrire" }}
+              </button>
+              <div class="small muted" *ngIf="s.is_full" role="status">
+                Limite atteinte (15 candidats)
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </ng-container>
+</div>
+<app-enroll-modal
+  [open]="enrollOpen"
+  [session]="selectedSession"
+  (closed)="closeEnroll()"
+  (enrolled)="onEnrolled()">
+</app-enroll-modal>
+

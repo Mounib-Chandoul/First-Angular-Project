@@ -1,0 +1,142 @@
+<div class="form-container">
+  <div class="form-header">
+    <h2>{{ isEdit ? 'Edit Session' : 'Create New Session' }}</h2>
+    <p class="form-subtitle">{{ isEdit ? 'Update session details' : 'Add a new training session to the system' }}</p>
+  </div>
+
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner-icon">⊙</div>
+    <p>Loading...</p>
+  </div>
+
+  <div *ngIf="!loading" class="form-card">
+    <div *ngIf="error" class="error-alert" role="alert">
+      <span class="error-icon">⚠</span>
+      {{ error }}
+    </div>
+
+    <form (ngSubmit)="save()" class="session-form">
+      <div class="form-group">
+        <label for="title" class="form-label">Session Title *</label>
+        <input
+          id="title"
+          type="text"
+          class="form-input"
+          [(ngModel)]="model.title"
+          name="title"
+          placeholder="e.g., Angular Advanced Patterns"
+          required
+          [disabled]="saving"
+        />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="date" class="form-label">Session Date</label>
+          <input
+            id="date"
+            type="date"
+            class="form-input"
+            [(ngModel)]="model.date"
+            name="date"
+            [disabled]="saving"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="capacity" class="form-label">Capacity (Max 15)</label>
+          <input
+            id="capacity"
+            type="number"
+            class="form-input"
+            [(ngModel)]="model.capacity"
+            name="capacity"
+            placeholder="1-15 participants"
+            min="1"
+            max="15"
+            [disabled]="saving"
+          />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="trainer" class="form-label">Assign Trainer (1st)</label>
+          <select
+            id="trainer"
+            class="form-input"
+            [(ngModel)]="model.trainer_id"
+            name="trainer_id"
+            [disabled]="saving"
+          >
+            <option value="">-- No Trainer --</option>
+            <option *ngFor="let t of trainers" [value]="t.id">
+              {{ t.firstName }} {{ t.lastName }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="trainer2" class="form-label">Assign Trainer (2nd, Optional)</label>
+          <select
+            id="trainer2"
+            class="form-input"
+            [(ngModel)]="model.trainer_id_2"
+            name="trainer_id_2"
+            [disabled]="saving"
+          >
+            <option value="">-- No 2nd Trainer --</option>
+            <option *ngFor="let t of trainers" [value]="t.id">
+              {{ t.firstName }} {{ t.lastName }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="training" class="form-label">Training Program</label>
+        <select
+          id="training"
+          class="form-input"
+          [(ngModel)]="model.trainingId"
+          name="trainingId"
+          [disabled]="saving"
+        >
+          <option value="">-- Select Program --</option>
+          <option *ngFor="let t of trainings" [value]="t.id">
+            {{ t.title }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="document" class="form-label">Training Materials (PDF)</label>
+        <div class="file-upload-zone">
+          <input
+            id="document"
+            type="file"
+            class="file-input"
+            accept=".pdf"
+            (change)="onDocumentSelected($event)"
+            [disabled]="saving"
+          />
+          <label for="document" class="file-label">
+            <span class="upload-icon">📄</span>
+            <span *ngIf="!documentFile">Click to upload or drag and drop</span>
+            <span *ngIf="documentFile">{{ documentFile.name }}</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="cancel()" [disabled]="saving">
+          Cancel
+        </button>
+        <button type="submit" class="btn-save" [disabled]="saving">
+          <span *ngIf="!saving">{{ isEdit ? 'Update Session' : 'Create Session' }}</span>
+          <span *ngIf="saving" class="spinner">Saving...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

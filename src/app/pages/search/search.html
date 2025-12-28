@@ -1,0 +1,39 @@
+<div class="page">
+  <div class="breadcrumb" *ngIf="selectedCategory" role="navigation" aria-label="Breadcrumb">
+    <a routerLink="/">Accueil</a> / <span>{{ selectedCategory.name }}</span>
+  </div>
+
+  <h2>{{ selectedCategory ? selectedCategory.name : 'Rechercher une formation' }}</h2>
+  <p class="subtitle">{{ selectedCategory ? 'Formations dans cette catégorie' : 'Tapez un mot-clé (titre, description ou tag) pour trouver une formation.' }}</p>
+
+  <div class="search-box">
+    <input
+      [(ngModel)]="q"
+      (keyup.enter)="onSearch()"
+      placeholder="Ex: angular, cybersecurity, database..."
+      type="text"
+    />
+    <button (click)="onSearch()">Search</button>
+    <button class="secondary" (click)="clear()">Clear</button>
+  </div>
+
+  <div *ngIf="loading" class="info">Searching...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <div *ngIf="!loading && results.length === 0 && q.trim() !== ''" class="info">
+    No results.
+  </div>
+
+    <div class="grid" *ngIf="results.length > 0">
+    <a class="card-link" *ngFor="let t of results" [routerLink]="['/trainings', t.id]">
+        <div class="card">
+        <h3>{{ t.title }}</h3>
+        <p class="desc">{{ t.description }}</p>
+        <div class="meta">
+            <span class="badge">{{ t.level }}</span>
+            <span class="badge">{{ t.duration_hours }}h</span>
+        </div>
+        </div>
+    </a>
+    </div>
+</div>

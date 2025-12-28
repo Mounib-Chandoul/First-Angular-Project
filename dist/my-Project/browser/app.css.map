@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/app.css"],
+  "sourcesContent": [".nav {\n  position: sticky;\n  top: 0;\n  z-index: 10;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 14px 18px;\n  background: rgba(255,255,255,0.85);\n  border-bottom: 1px solid rgba(226,232,240,0.9);\n  backdrop-filter: blur(10px);\n  font-family: ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, Arial, sans-serif;\n}\n\n.brand {\n  font-weight: 900;\n  letter-spacing: -0.02em;\n  font-size: 18px;\n}\n\n.links {\n  display: flex;\n  gap: 14px;\n}\n\na {\n  text-decoration: none;\n  color: #0f172a;\n  font-weight: 800;\n  padding: 8px 10px;\n  border-radius: 12px;\n}\n\na:hover {\n  background: rgba(226,232,240,0.7);\n}\n\na.active {\n  background: rgba(99,102,241,0.12);\n  border: 1px solid rgba(99,102,241,0.25);\n}\n"],
+  "mappings": ";AAAA,CAAC;AACC,YAAU;AACV,OAAK;AACL,WAAS;AACT,WAAS;AACT,mBAAiB;AACjB,eAAa;AACb,WAAS,KAAK;AACd,cAAY,KAAK,GAAG,EAAC,GAAG,EAAC,GAAG,EAAC;AAC7B,iBAAe,IAAI,MAAM,KAAK,GAAG,EAAC,GAAG,EAAC,GAAG,EAAC;AAC1C,2BAAiB,KAAK;AAAtB,mBAAiB,KAAK;AACtB;AAAA,IAAa,aAAa;AAAA,IAAE,SAAS;AAAA,IAAE,aAAa;AAAA,IAAE,UAAU;AAAA,IAAE,MAAM;AAAA,IAAE,KAAK;AAAA,IAAE;AACnF;AAEA,CAAC;AACC,eAAa;AACb,kBAAgB;AAChB,aAAW;AACb;AAEA,CAAC;AACC,WAAS;AACT,OAAK;AACP;AAEA;AACE,mBAAiB;AACjB,SAAO;AACP,eAAa;AACb,WAAS,IAAI;AACb,iBAAe;AACjB;AAEA,CAAC;AACC,cAAY,KAAK,GAAG,EAAC,GAAG,EAAC,GAAG,EAAC;AAC/B;AAEA,CAAC,CAAC;AACA,cAAY,KAAK,EAAE,EAAC,GAAG,EAAC,GAAG,EAAC;AAC5B,UAAQ,IAAI,MAAM,KAAK,EAAE,EAAC,GAAG,EAAC,GAAG,EAAC;AACpC;",
+  "names": []
+}

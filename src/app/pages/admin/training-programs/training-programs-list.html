@@ -1,0 +1,52 @@
+<div class="programs-container">
+  <div class="programs-header">
+    <div class="header-content">
+      <h2>Manage Training Programs</h2>
+      <p class="subtitle">Create, edit, and manage training courses</p>
+    </div>
+    <a routerLink="/admin/training-programs/new" class="btn-primary">+ New Program</a>
+  </div>
+
+  <div class="programs-content">
+    <div *ngIf="loading" class="loading-state">
+      <div class="spinner-icon">⊙</div>
+      <p>Loading training programs...</p>
+    </div>
+
+    <div *ngIf="error && !loading" class="error-alert" role="alert">
+      <span class="error-icon">⚠</span>
+      {{ error }}
+    </div>
+
+    <div *ngIf="!loading && programs.length === 0" class="empty-state">
+      <p>No training programs found</p>
+      <a routerLink="/admin/training-programs/new" class="btn-secondary">Create First Program</a>
+    </div>
+
+    <div *ngIf="!loading && programs.length > 0" class="programs-table-wrapper">
+      <table class="programs-table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Duration</th>
+            <th>Difficulty</th>
+            <th>Category</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let program of programs" class="program-row">
+            <td class="title-cell">{{ program.title }}</td>
+            <td class="duration-cell">{{ program.duration || '-' }} hrs</td>
+            <td class="difficulty-cell">{{ program.difficultyLevel || '-' }}</td>
+            <td class="category-cell">{{ program.category || '-' }}</td>
+            <td class="actions-cell">
+              <a [routerLink]="['/admin/training-programs', program.id, 'edit']" class="btn-action btn-edit" title="Edit program">✎ Edit</a>
+              <button (click)="delete(program.id)" class="btn-action btn-delete" title="Delete program">✕ Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

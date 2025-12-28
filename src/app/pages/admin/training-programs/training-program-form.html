@@ -1,0 +1,60 @@
+<div class="container">
+  <div class="form-card">
+    <h2>{{ isEdit ? 'Edit Training Program' : 'New Training Program' }}</h2>
+
+    <div *ngIf="loading" class="loading">Loading...</div>
+
+    <div *ngIf="error" class="error-alert">
+      <strong>Error:</strong> {{ error }}
+    </div>
+
+    <div *ngIf="!loading" class="form-group">
+      <label>Title *</label>
+      <input [(ngModel)]="form.title" type="text" placeholder="Enter program title" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label>Description *</label>
+      <textarea [(ngModel)]="form.description" placeholder="Enter program description" class="form-control" rows="4"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Duration (hours) *</label>
+      <input [(ngModel)]="form.duration" type="number" placeholder="Enter duration" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label>Difficulty Level *</label>
+      <select [(ngModel)]="form.difficultyLevel" class="form-control">
+        <option value="Beginner">Beginner</option>
+        <option value="Intermediate">Intermediate</option>
+        <option value="Advanced">Advanced</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Category *</label>
+      <select [(ngModel)]="form.category" class="form-control">
+        <option value="">Select a category</option>
+        <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Keywords</label>
+      <input [(ngModel)]="form.keywords" type="text" placeholder="Enter keywords (comma separated)" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label>Program Document (PDF)</label>
+      <input type="file" accept=".pdf" (change)="onFileSelected($event)" class="form-control">
+    </div>
+
+    <div class="form-actions">
+      <button (click)="submit()" [disabled]="saving" class="btn btn-primary">
+        {{ saving ? 'Saving...' : (isEdit ? 'Update' : 'Create') }}
+      </button>
+      <button (click)="cancel()" class="btn btn-secondary">Cancel</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+<div class="page">
+  <h2>Programme de formation</h2>
+  <p class="subtitle">
+    Découvrez les catégories de formations proposées par l’ISET de Radès.
+  </p>
+
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner">⊙</div>
+    <p>Loading categories...</p>
+  </div>
+
+  <div *ngIf="!loading && error" class="error-state">
+    <p class="error-message">{{ error }}</p>
+    <button class="btn-retry" (click)="retry()">Try Again</button>
+  </div>
+
+  <div class="grid" *ngIf="!loading && !error && categories.length > 0">
+    <a class="card" [routerLink]="['/search']" [queryParams]="{category: c.id}" *ngFor="let c of categories" role="link" tabindex="0" [attr.aria-label]="'Voir les formations de ' + c.name">
+      <h3>{{ c.name }}</h3>
+      <p class="hint">Voir les formations</p>
+      <span class="arrow">→</span>
+    </a>
+  </div>
+
+  <div *ngIf="!loading && !error && categories.length === 0" class="info">
+    No categories found.
+  </div>
+</div>
